@@ -1,0 +1,31 @@
+import requests
+
+def trigger_jenkins_job():
+    # Jenkins job URL (replace with your Jenkins job name and server)
+    jenkins_url = "http://localhost:8080/job/MyJob/build"
+
+    # If Jenkins requires authentication, use username and API token
+    # Example: ("username", "apitoken")
+    auth = ("your-username", "your-api-token")
+
+    # Optional: parameters if your Jenkins job expects them
+    payload = {
+        "parameter": [
+            {"name": "BRANCH", "value": "main"}
+        ]
+    }
+
+    headers = {"Content-Type": "application/json"}
+
+    # Send POST request
+    response = requests.post(jenkins_url, auth=auth, json=payload, headers=headers)
+
+    # Check response
+    if response.status_code in [200, 201]:
+        print("✅ Jenkins job triggered successfully!")
+    else:
+        print(f"❌ Failed to trigger job. Status code: {response.status_code}")
+        print(response.text)
+
+if __name__ == "__main__":
+    trigger_jenkins_job()
